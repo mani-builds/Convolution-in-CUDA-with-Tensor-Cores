@@ -1,0 +1,15 @@
+* Two week plan
+Start: Jan 31
+Week 1: 
+Day 1: Implemented 3D convolutions
+
+Day 2: Monitor existing programs using Nsight, then use cuBLAS
+
+Day 3: cutlass, cuTE lecture
+
+Implement im2col
+Implement GEMM with WMMA
+Test: Use MNIST or synthetic data. Verify against NumPy convolve.
+Profile: Nsight for bottlenecks (e.g., add kernel fusion if loads are slow).
+End: Feb 14
+
