@@ -1,28 +1,22 @@
-*   A convolutional layer from scratch in CUDA, optimize for Ada Lovelace architecture focusing on tensor cores 
+A convolutional layer from scratch in CUDA, optimize for GPU architectures with tensor cores 
 
-Stage 1: Naive Implementation of a 2D/3D convolutional kernel in CUDA
+* Naive Implementation of a 2D/3D convolutional kernel in CUDA
 It uses Global Memory
 Profile: High Latency and Low Occupancy
 
-Stage 2: Basic Optimizations 
+* Basic Optimizations 
 Constant memory for the Kernel (since the data doesn't change during execution)
 Shared Memory Tiling. Reduces global accesses dramatically 11x fewer
-Profile these
+Profile these.
 
-Stage 3: im2col - convert a 2D image into an array by flattening it.
+* im2col - convert an image into an array by flattening it, so that a GEMM can be used instead of sliding filter
 
-Stage 4: 
-NVIDIA RTX 4060 (Ada Lovelace):
-No. of Tensor cores:
-How many per SM:
-No. of SMs:
 
-Tensor core GEMM using CUBLAS library
-  * [ ] GEMM with WMMA: Use CUDA's WMMA API (Warp Matrix Multiply-Accumulate) for FP16 tensor ops.
-Rules: Dimensions multiple of 8/16, FP16 inputs, enable CUDNN_TENSOR_OP_MATH if using cuDNN for comparison.
-Layout: Use NHWC (channels last) for better tensor core perf.
-Benchmark: Compare to cuDNN (cudnnConvolutionForward with TENSOR_OP_MATH). Aim for close-to-peak TFLOPS on Ampere.
+TODO
+* [ ] Tensor core GEMM with CUDA WMMA API (Warp Matrix Multiply-Accumulate) for FP16 tensor ops
 
-Stage 5: make it an executable in linux like a library
+* [ ] Baseline comparison with cuDNN's convolution
 
-Stage 6: Make it importable with pytorch
+* [ ] Make it an executable in linux like a library
+
+* [ ] Make it importable with pytorch
