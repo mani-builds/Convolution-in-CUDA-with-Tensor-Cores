@@ -49,19 +49,33 @@ im2col_image = np.zeros([patch_size, num_of_patches])
 # im2col_image = im2col_image.reshape
 
 # Flatten input image
-for each_patch in range(num_of_patches):
-    # 1. Calculate the top-left corner of the current patch
-    # This converts 1D patch index into 2D (row, col) coordinates
-    start_h = (each_patch // W_out) * stride
-    start_w = (each_patch % W_out) * stride
+col_idx = 0
+for i in range(H_out):
+    for j in range(W_out):
+        start_h = i * stride
+        start_w = j * stride
 
-    idx_count = 0
-    for channel in range(filter.shape[0]):
-        for row in range(filter.shape[1]):
-            for col in range(filter.shape[2]):
-                # 2. Use the start coordinates to "offset" the selection
-                im2col_image[idx_count][each_patch] = image_padded[channel, start_h + row, start_w + col]
-                idx_count += 1
+        # Now fill the column for this specific patch
+        idx_count = 0
+        for channel in range(filter.shape[0]):
+            for row in range(filter.shape[1]):
+                for col in range(filter.shape[2]):
+                    im2col_image[idx_count][col_idx] = image_padded[channel, start_h + row, start_w + col]
+                    idx_count += 1
+        col_idx += 1
+# for each_patch in range(num_of_patches):
+#     # 1. Calculate the top-left corner of the current patch
+#     # This converts 1D patch index into 2D (row, col) coordinates
+#     start_h = (each_patch // W_out) * stride
+#     start_w = (each_patch % W_out) * stride
+
+#     idx_count = 0
+#     for channel in range(filter.shape[0]):
+#         for row in range(filter.shape[1]):
+#             for col in range(filter.shape[2]):
+#                 # 2. Use the start coordinates to "offset" the selection
+#                 im2col_image[idx_count][each_patch] = image_padded[channel, start_h + row, start_w + col]
+#                 idx_count += 1
 
 print(im2col_image)
 print("Shape of im2col_image: ", im2col_image.shape)
