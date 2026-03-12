@@ -22,11 +22,11 @@ Day 3: cutlass, cuTE lecture
 
 * TODO Implement using WMMA (Leverage Tensor cores)
 - [X] Do the basic wmma GEMM
-        - Load input image and convert it into a matrix
-        - Load the kernel as matrix
-        - Can you perform convolution like in Naive conv? (Ans: No, since it's not efficient)
+- [X] Load input image and convert it into a matrix
+- [X] Load the kernel as matrix
+- Can you perform convolution like in Naive conv? (Ans: No, since it's not efficient)
 
-        - Use GEMM (? - if you have used im2col)
+- Use GEMM (? - if you have used im2col)
 
 - [ ] Implement WMMA convolution as GEMM with im2col
 

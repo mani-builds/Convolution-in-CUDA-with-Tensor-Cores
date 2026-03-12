@@ -50,13 +50,15 @@ int main(){
   int im2col_H, im2col_W;
   int C_out;
 
+  // char f_input_array_shape[20];
+  // scanf("\n Enter the file of input image array shape (txt): %s", f_input_array_shape);
   FILE *file = fopen("dog_array_shape.txt", "r");
     if (file == NULL) {
         return 1; // Error opening file
     }
     float value;
     float *image_shape;
-    image_shape = (float *)malloc(sizeof(float)*3);
+    image_shape = (float *)malloc(sizeof(float)*4);
     int i =0;
     while (fscanf(file, "%f", &value) == 1) {
       image_shape[i] = value;
@@ -64,7 +66,7 @@ int main(){
     }
 
     FILE *kfile = fopen("kernel_array_shape.txt", "r");
-    if (file == NULL) {
+    if (kfile == NULL) {
         return 1; // Error opening file
     }
     float svalue;
@@ -92,7 +94,7 @@ int main(){
 
 
   FILE *image_file = fopen("dog_array.txt", "r");
-  if (file == NULL) {
+  if (image_file == NULL) {
         return 1; // Error opening file
     }
     i=0;
@@ -102,8 +104,8 @@ int main(){
       i++;
     }
 
-  FILE *kernel_file = fopen("kernel_array.txt", "r");
-  if (file == NULL) {
+  FILE *kernel_file = fopen("identity_kernel_array.txt", "r");
+  if (kernel_file == NULL) {
         return 1; // Error opening file
     }
     i=0;
@@ -151,14 +153,14 @@ int main(){
   printf("\nim2col DIM im2col_H and im2col_W: (%d, %d)",im2col_H, im2col_W);
 
   dim3 threadsPerBlock(16,  16);
-dim3 blocksPerGrid((W_out + threadsPerBlock.x - 1) / threadsPerBlock.x,
+  dim3 blocksPerGrid((W_out + threadsPerBlock.x - 1) / threadsPerBlock.x,
                      (H_out + threadsPerBlock.y - 1) / threadsPerBlock.y);
 
   im2col_kernel<<<blocksPerGrid,threadsPerBlock>>>(image,C_in, H_in, W_in, im2col_H, im2col_W, kernel_size, im2col);
 
   cudaMemcpy(im2col_h, im2col, im2col_H*im2col_W*sizeof(float), cudaMemcpyDeviceToHost);
 
-  FILE *im2co_file = fopen("im2col_array.txt", "w");
+  FILE *im2co_file = fopen("im2col_array_identity.txt", "w");
   printf("\nIm2col image: \n");
   for (int i = 0; i < im2col_H ; i++) {
   for (int j = 0; j < im2col_W ; j++) {

@@ -23,7 +23,7 @@ gauss_3d = np.array([
 ])
 gauss_3d = gauss_3d / gauss_3d.sum() # Normalize so brightness stays same
 # 1. Gaussian (Wrap the 3D cube into a 4D array with 1 output channel)
-gauss_4d = gauss_3d.reshape(1, 3, 3, 3)
+gauss_4d = np.stack([gauss_3d, gauss_3d, gauss_3d], axis=0)
 
 # 2. Laplacian (Already 4D)
 laplace_4d = np.full((3, 3, 3, 3), -1.0)
@@ -34,6 +34,7 @@ for i in range(3):
 identity_4d = np.zeros((3, 3, 3, 3))
 for i in range(3):
     identity_4d[i, i, 1, 1] = 1.0 # Channel i looks only at Channel i input
+
 
 # CHOOSE YOUR FILTER HERE
 filter = identity_4d

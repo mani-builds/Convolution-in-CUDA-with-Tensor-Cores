@@ -15,12 +15,8 @@ def image_build():
     with open(a_name, 'r') as a:
         shape = np.loadtxt(a)
     n_channels, height, width = shape.astype(int)
-    print(n_channels, height, width)
     output = output.reshape([height, width, n_channels])
-    print("Reshaped: ", output.shape)
     output = output.astype(np.uint8)
-    print(output)
-    print(type(output))
     im_o = Image.fromarray(output)
     im_o.save(o_name)
 

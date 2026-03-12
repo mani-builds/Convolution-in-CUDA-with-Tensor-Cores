@@ -66,7 +66,7 @@ int main() {
     int number_of_patches = image_shape[1] * image_shape[2];
     // Reading Kernel matrix (in 1D array)
 
-  FILE *kernel_file = fopen("kernel_array.txt", "r");
+  FILE *kernel_file = fopen("identity_kernel_array.txt", "r");
   if (kernel_file == NULL) {
         return 1; // Error opening file
     }
@@ -82,10 +82,9 @@ int main() {
            patch_size,
            number_of_patches);
 
-
     // Reading the im2col matrix (in 1D array form)
     im2col_h = (float *)malloc(patch_size*number_of_patches*sizeof(float));
-    FILE *im2col_file = fopen("im2col_array.txt", "r");
+    FILE *im2col_file = fopen("im2col_array_identity.txt", "r");
     if (im2col_file == NULL) {
       return 1;
     }
@@ -112,13 +111,14 @@ int main() {
         (number_of_patches + threadsPerBlock.x - 1) / threadsPerBlock.x,
                        (C_out + threadsPerBlock.y - 1) / threadsPerBlock.y);
 
-    convolution_gemm_kernel<<<blocksPerGrid, threadsPerBlock>>>(kernel, im2col, output, C_out,patch_size, number_of_patches);
+    convolution_gemm_kernel<<<blocksPerGrid, threadsPerBlock>>>
+    (kernel, im2col, output, C_out,patch_size, number_of_patches);
 
     output_h = (float *)malloc(C_out * number_of_patches * sizeof(float));
 
     cudaMemcpy(output_h, output, C_out * number_of_patches * sizeof(float), cudaMemcpyDeviceToHost);
 
-    FILE *ofile = fopen("output_gemm.txt", "w");
+    FILE *ofile = fopen("output_gemm_identity.txt", "w");
     if (ofile == NULL){ return 1;}
     for (int i = 0; i<C_out * number_of_patches; i++){
       fprintf(ofile, "%.0f ", output_h[i]);
